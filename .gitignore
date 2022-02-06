@@ -1,0 +1,21 @@
+.idea
+.vscode
+
+# Ignore Cache
+*.cache
+
+# Ignore Reports
+reports/*
+
+# Ignore Env file
+.env
+.env.*
+
+# go mod vendor
+vendor/
+
+# temporal data
+tmp/
+build/
+bin/
+tools/
