@@ -2,6 +2,7 @@ package promtail
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -35,7 +36,7 @@ func NewRawStreamConv(labels, sep string) StreamConverter {
 
 func (s *rawStreamConv) ConvertEntry(bytes []byte) (Entry, error) {
 	now := time.Now().UnixNano()
-	return Entry{now, string(bytes)}, nil
+	return Entry{strconv.FormatInt(now, 10), string(bytes)}, nil
 }
 
 func (s *rawStreamConv) ExtractLabels(bytes []byte) (LabelSet, error) {
