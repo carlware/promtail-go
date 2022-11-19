@@ -1,5 +1,10 @@
 # promtail golang client
 
+The purpose of this small library is creating a tool for upload logs to grafana loki. The logs looks pretty amazing and awesome, we can have static labels or dynamic labels for filtering while we're debugging. 
+
+![awesome_logs](https://user-images.githubusercontent.com/3860869/178655633-505993ba-28ef-4a18-9639-642ba5b2c401.png)
+
+
 promtail client for golang services
 
 ```golang
