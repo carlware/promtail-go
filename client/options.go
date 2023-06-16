@@ -1,6 +1,10 @@
 package client
 
-import "github.com/carlware/promtail-go"
+import (
+	"time"
+
+	"github.com/carlware/promtail-go"
+)
 
 type optionApplyFunc func(client *promClient) error
 
@@ -22,6 +26,13 @@ func WithStreamConverter(converter promtail.StreamConverter) Option {
 func WithStaticLabels(labels map[string]interface{}) Option {
 	return optionApplyFunc(func(client *promClient) error {
 		client.staticLabels = labels
+		return nil
+	})
+}
+
+func WithWriteTimeout(seconds int) Option {
+	return optionApplyFunc(func(client *promClient) error {
+		client.writeTimeout = time.Duration(seconds) * time.Second
 		return nil
 	})
 }
