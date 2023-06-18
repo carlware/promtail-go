@@ -11,6 +11,7 @@ import (
 
 const (
 	readTimeOut        = 10
+	writeTimeOut       = 10
 	maxIdleConnections = 128
 	maxConnections     = 512
 )
@@ -32,6 +33,7 @@ type promClient struct {
 	httpClient   promtail.HttpClient
 	streamConv   promtail.StreamConverter
 	staticLabels map[string]interface{}
+	writeTimeout time.Duration
 }
 
 func NewSimpleClient(host, username, password string, opts ...Option) (*promClient, error) {
@@ -56,6 +58,9 @@ func NewSimpleClient(host, username, password string, opts ...Option) (*promClie
 }
 
 func (c *promClient) Write(p []byte) (i int, err error) {
+	ctx, cancel := context.WithTimeout(context.Background(), c.writeTimeout)
+	defer cancel()
+
 	labels, err := c.streamConv.ExtractLabels(p)
 	if err != nil {
 		return 0, err
@@ -75,8 +80,9 @@ func (c *promClient) Write(p []byte) (i int, err error) {
 		Entries: []promtail.Entry{entry},
 	}}}
 
-	if rErr := c.httpClient.Push(context.Background(), req); rErr != nil {
+	if rErr := c.httpClient.Push(ctx, req); rErr != nil {
 		return 0, rErr
 	}
+
 	return len(p), nil
 }
