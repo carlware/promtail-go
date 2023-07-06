@@ -37,9 +37,11 @@ type promClient struct {
 }
 
 func NewSimpleClient(host, username, password string, opts ...Option) (*promClient, error) {
+
 	pHttpClient, err := promtailHttpClient.New(host, username, password,
 		promtailHttpClient.WithHttpClient(newHttpClient()),
 	)
+
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +60,7 @@ func NewSimpleClient(host, username, password string, opts ...Option) (*promClie
 }
 
 func (c *promClient) Write(p []byte) (i int, err error) {
+
 	ctx, cancel := context.WithTimeout(context.Background(), c.writeTimeout)
 	defer cancel()
 

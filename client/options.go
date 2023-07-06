@@ -30,9 +30,9 @@ func WithStaticLabels(labels map[string]interface{}) Option {
 	})
 }
 
-func WithWriteTimeout(seconds int) Option {
+func WithWriteTimeout(ms int) Option {
 	return optionApplyFunc(func(client *promClient) error {
-		client.writeTimeout = time.Duration(seconds) * time.Second
+		client.writeTimeout = time.Duration(ms) * time.Millisecond
 		return nil
 	})
 }

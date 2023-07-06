@@ -5,9 +5,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/carlware/promtail-go"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/carlware/promtail-go"
 )
 
 const (
@@ -46,6 +47,7 @@ func New(host, username, password string, opts ...Option) (*promHttpClient, erro
 }
 
 func (p *promHttpClient) Push(ctx context.Context, req promtail.PushRequest) error {
+
 	bodyBytes, err := json.Marshal(req)
 	if err != nil {
 		return err
@@ -61,7 +63,7 @@ func (p *promHttpClient) Push(ctx context.Context, req promtail.PushRequest) err
 		request.SetBasicAuth(p.username, p.password)
 	}
 
-	resp, err := p.httpClient.Do(request)
+	resp, err := p.httpClient.Do(request.WithContext(ctx))
 	if err != nil {
 		return err
 	}
